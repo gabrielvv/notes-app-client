@@ -9,7 +9,8 @@ import { Auth } from 'aws-amplify'
 function App(props) {
   const [isAuthenticated, userHasAuthenticated] = useState(false)
   const [isAuthenticating, setIsAuthenticating] = useState(true)
-  function handleLogout() {
+  async function handleLogout() {
+    await Auth.signOut();
     userHasAuthenticated(false)
   }
 
