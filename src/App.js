@@ -9,6 +9,7 @@ import { Auth } from 'aws-amplify'
 function App(props) {
   const [isAuthenticated, userHasAuthenticated] = useState(false)
   const [isAuthenticating, setIsAuthenticating] = useState(true)
+  const [user, setUser] = useState(null)
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
@@ -22,6 +23,8 @@ function App(props) {
   async function onLoad() {
     try {
       await Auth.currentSession();
+      const user = await Auth.currentAuthenticatedUser();
+      setUser(user);
       userHasAuthenticated(true);
     } catch (e) {
       if (e !== 'No current user') {
@@ -58,7 +61,7 @@ function App(props) {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
+      <Routes appProps={{ isAuthenticated, userHasAuthenticated, user }} />
     </div>
   );
 }
